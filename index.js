@@ -62,9 +62,14 @@ async function run() {
     app.get("/services", async (req, res) => {
       const sort = req.query.sort;
       const search = req.query.search;
+
+      if (search && typeof search !== "string") {
+        res.status(400).send("Search query must be a string.");
+        return;
+      }
       // console.log(search);
       // const query = {};
-      const query = { title: { $regex: search, $options: 'i' } };
+      const query = { title: { $regex: search, $options: "i" } };
       // const query = { price: { $gt: 50, $lte: 150 } };
       const options = {
         // sort matched documents in descending order by rating
